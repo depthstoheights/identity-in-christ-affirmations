@@ -1,0 +1,1618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identity in Christ Affirmations</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            background: linear-gradient(45deg, #f7dc6f, #f4d03f, #f8c471, #f9ca24);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            min-height: 100vh;
+            color: #2c3e50;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .app-container {
+            max-width: 100vw;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 80px;
+        }
+
+        /* Audio Toggle */
+        .audio-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: linear-gradient(45deg, #e67e22, #d35400);
+            border: none;
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 1.2em;
+        }
+
+        .audio-toggle:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+        }
+
+        /* Back Button */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #e67e22;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.5em;
+            color: #e67e22;
+            font-weight: bold;
+        }
+
+        .back-button:hover {
+            background: #e67e22;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .back-button.show {
+            display: flex;
+        }
+
+        /* Welcome Screen */
+        .welcome-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .welcome-content {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px 40px;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            max-width: 450px;
+            width: 100%;
+            border: 3px solid #f39c12;
+        }
+
+        .app-logo {
+            font-size: 4em;
+            color: #e67e22;
+            margin-bottom: 25px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 20px #f39c12; }
+            to { text-shadow: 0 0 30px #e67e22, 0 0 40px #e67e22; }
+        }
+
+        .app-title {
+            font-size: 2.4em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: bold;
+            letter-spacing: -1px;
+        }
+
+        .app-subtitle {
+            font-size: 1.2em;
+            color: #7f8c8d;
+            margin-bottom: 35px;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .enter-btn {
+            background: linear-gradient(45deg, #e67e22, #d35400);
+            color: white;
+            border: none;
+            padding: 18px 45px;
+            border-radius: 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+
+        .enter-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #d35400, #a04000);
+        }
+
+        /* Main App Screens */
+        .screen {
+            display: none;
+            min-height: 100vh;
+            padding: 80px 20px 100px 20px;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        /* Home Dashboard */
+        .dashboard {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 35px;
+            border-radius: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border: 2px solid #f39c12;
+        }
+
+        .daily-affirmation {
+            font-size: 1.8em;
+            color: #2c3e50;
+            font-weight: bold;
+            margin-bottom: 15px;
+            line-height: 1.4;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .affirmation-verse {
+            font-size: 1.1em;
+            color: #e67e22;
+            font-style: italic;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .streak-display {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 25px;
+        }
+
+        .streak-item {
+            text-align: center;
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .streak-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            display: block;
+        }
+
+        .streak-label {
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            text-align: center;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            border-color: #f39c12;
+        }
+
+        .card-icon {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            display: block;
+            color: #e67e22;
+        }
+
+        .card-title {
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-description {
+            color: #7f8c8d;
+            line-height: 1.6;
+            font-size: 1.1em;
+        }
+
+        /* Affirmation Screens */
+        .affirmation-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            border: 3px solid #f39c12;
+            text-align: center;
+        }
+
+        .affirmation-header {
+            margin-bottom: 40px;
+        }
+
+        .affirmation-title {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .affirmation-subtitle {
+            color: #e67e22;
+            font-size: 1.3em;
+            font-style: italic;
+        }
+
+        .main-affirmation {
+            font-size: 2.2em;
+            line-height: 1.4;
+            color: #2c3e50;
+            margin: 40px 0;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 30px;
+            background: linear-gradient(45deg, #fff9e6, #fef5e7);
+            border-radius: 20px;
+            border: 2px solid #f39c12;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .supporting-verse {
+            font-size: 1.3em;
+            font-style: italic;
+            color: #e67e22;
+            margin: 30px 0;
+            line-height: 1.6;
+            padding: 25px;
+            background: rgba(230, 126, 34, 0.1);
+            border-radius: 15px;
+            border-left: 5px solid #e67e22;
+        }
+
+        .verse-reference {
+            font-weight: bold;
+            color: #d35400;
+            margin-top: 15px;
+            font-size: 1.1em;
+        }
+
+        .affirmation-actions {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #e67e22, #d35400);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.9);
+            color: #e67e22;
+            border: 2px solid #e67e22;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #d35400, #a04000);
+        }
+
+        .btn-secondary:hover {
+            background: #e67e22;
+            color: white;
+        }
+
+        /* Crisis Support */
+        .crisis-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .crisis-alert {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 35px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            border: 3px solid #922b21;
+        }
+
+        .crisis-alert h2 {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .crisis-text {
+            font-size: 1.3em;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .identity-grid {
+            display: grid;
+            gap: 25px;
+            margin-top: 35px;
+        }
+
+        .identity-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border: 2px solid #f39c12;
+            text-align: center;
+        }
+
+        .identity-statement {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .identity-verse {
+            font-size: 1.2em;
+            font-style: italic;
+            color: #e67e22;
+            line-height: 1.6;
+        }
+
+        /* Resources */
+        .resources-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .resource-section {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 35px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border: 2px solid #f39c12;
+        }
+
+        .section-title {
+            font-size: 2em;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .affirmation-list {
+            list-style: none;
+        }
+
+        .affirmation-item {
+            padding: 20px;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #fff9e6, #fef5e7);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .affirmation-item:hover {
+            background: linear-gradient(45deg, #f4d03f, #f7dc6f);
+            transform: translateX(10px);
+            border-color: #e67e22;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .affirmation-preview {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.2em;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .affirmation-description {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: space-around;
+            padding: 18px 0;
+            box-shadow: 0 -8px 25px rgba(0,0,0,0.15);
+            z-index: 1000;
+            border-top: 3px solid #f39c12;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            flex: 1;
+            max-width: 85px;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-icon {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+            color: #e67e22;
+        }
+
+        .nav-item:hover .nav-icon, .nav-item.active .nav-icon {
+            color: white;
+        }
+
+        .nav-label {
+            font-size: 0.85em;
+            color: #2c3e50;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-item:hover .nav-label, .nav-item.active .nav-label {
+            color: white;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            max-width: 550px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            border: 3px solid #f39c12;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 2em;
+            cursor: pointer;
+            color: #e67e22;
+            font-weight: bold;
+        }
+
+        .modal-close:hover {
+            color: #d35400;
+            transform: scale(1.2);
+        }
+
+        .modal-title {
+            font-size: 2em;
+            margin-bottom: 25px;
+            color: #2c3e50;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .modal-text {
+            line-height: 1.6;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .donate-btn {
+            background: linear-gradient(45deg, #27ae60, #229954);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1em;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .donate-btn:hover {
+            background: linear-gradient(45deg, #229954, #1e8449);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Success Messages */
+        .success-message {
+            background: linear-gradient(45deg, #27ae60, #229954);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(-15px);
+            transition: all 0.4s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .success-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Progress Ring */
+        .progress-ring {
+            margin: 30px auto;
+            text-align: center;
+        }
+
+        .progress-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(#e67e22 0deg, #e67e22 252deg, #ecf0f1 252deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .progress-inner {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .progress-percentage {
+            font-size: 2em;
+            font-weight: bold;
+            color: #e67e22;
+        }
+
+        .progress-text {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            text-transform: uppercase;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .welcome-content {
+                padding: 35px 25px;
+                margin: 20px;
+            }
+
+            .app-title {
+                font-size: 2em;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .affirmation-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 250px;
+            }
+
+            .main-affirmation {
+                font-size: 1.8em;
+                padding: 20px;
+            }
+
+            .streak-display {
+                flex-direction: column;
+                gap: 15px;
+                align-items: center;
+            }
+
+            .streak-item {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                padding: 12px 20px;
+            }
+
+            .streak-number {
+                font-size: 2em;
+            }
+
+            .bottom-nav {
+                padding: 12px 0;
+            }
+
+            .nav-icon {
+                font-size: 1.5em;
+            }
+
+            .nav-label {
+                font-size: 0.75em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .screen {
+                padding: 70px 15px 90px 15px;
+            }
+
+            .affirmation-container, .crisis-container, .resources-container {
+                padding: 25px;
+                margin: 10px;
+            }
+
+            .modal-content {
+                margin: 10px;
+                padding: 25px;
+            }
+
+            .main-affirmation {
+                font-size: 1.5em;
+            }
+
+            .affirmation-title {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Audio Toggle -->
+        <button class="audio-toggle" onclick="toggleAudio()" id="audioToggle">
+            ♪
+        </button>
+
+        <!-- Back Button -->
+        <button class="back-button" onclick="goBack()" id="backButton">
+            ←
+        </button>
+
+        <!-- Background Audio -->
+        <audio id="backgroundAudio" loop>
+            <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+D2u2IdBTmX2+/TfCMEKoHU8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwGJHfH8N2QQAoUXrTp66hVFApGn+D2u2IdBjiR1/LNeSsFJHfH8N2QQAoUXrTp66hVFApGn+D2u2IdBTmX2+/TfCMEKoHU8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwGJHfH8N2QQAoUXrTp66hVFApGn+D2u2IdBTmX2+/TfCMEKoHU8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwGJHfH8N2QQAoUXrTp66hVFApGn+D2u2IdBTmX2+/TfCMEKoHU8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwGJHfH8N2QQAoUXrTp66hVFApGn+D2u2IdBTmX2+/TfCMEKoHU8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwGJHfH8N2QQAoUXrTp66hVFApGn+D2u2IdBTmX2+/TfCMEKoHU8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwGJHfH8N2QQAoUXrTp66hVFApGn+D2u2Id" type="audio/wav">
+        </audio>
+
+        <!-- Welcome Screen -->
+        <div id="welcomeScreen" class="welcome-screen">
+            <div class="welcome-content">
+                <div class="app-logo">✨</div>
+                <h1 class="app-title">Identity in Christ</h1>
+                <p class="app-subtitle">Discover who you truly are through God's eyes with powerful daily affirmations</p>
+                <button class="enter-btn" onclick="enterApp()">Discover My Identity</button>
+            </div>
+        </div>
+
+        <!-- Home Dashboard -->
+        <div id="homeScreen" class="screen">
+            <div class="dashboard">
+                <div class="dashboard-header">
+                    <div class="daily-affirmation" id="dailyAffirmation">I am fearfully and wonderfully made</div>
+                    <div class="affirmation-verse" id="affirmationVerse">"I praise you because I am fearfully and wonderfully made; your works are wonderful, I know that full well." - Psalm 139:14</div>
+                    
+                    <div class="streak-display">
+                        <div class="streak-item">
+                            <span class="streak-number" id="affirmationStreak">12</span>
+                            <span class="streak-label">Day Streak</span>
+                        </div>
+                        <div class="streak-item">
+                            <span class="streak-number" id="totalAffirmations">58</span>
+                            <span class="streak-label">Affirmations</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="dashboard-card" onclick="showScreen('todayAffirmation')">
+                        <span class="card-icon">🌟</span>
+                        <h3 class="card-title">Today's Truth</h3>
+                        <p class="card-description">Your personalized daily identity affirmation from Scripture</p>
+                    </div>
+
+                    <div class="dashboard-card" onclick="showScreen('worthAffirmations')">
+                        <span class="card-icon">💎</span>
+                        <h3 class="card-title">My Worth</h3>
+                        <p class="card-description">Powerful affirmations about your value and worth in Christ</p>
+                    </div>
+
+                    <div class="dashboard-card" onclick="showScreen('strengthAffirmations')">
+                        <span class="card-icon">💪</span>
+                        <h3 class="card-title">My Strength</h3>
+                        <p class="card-description">Declarations of the power and strength you have in God</p>
+                    </div>
+
+                    <div class="dashboard-card" onclick="showScreen('loveAffirmations')">
+                        <span class="card-icon">❤️</span>
+                        <h3 class="card-title">My Love</h3>
+                        <p class="card-description">Reminders of how deeply and completely you are loved</p>
+                    </div>
+                </div>
+
+                <div class="progress-ring">
+                    <div class="progress-circle">
+                        <div class="progress-inner">
+                            <div class="progress-percentage">70%</div>
+                            <div class="progress-text">Week Goal</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Today's Affirmation Screen -->
+        <div id="todayAffirmation" class="screen">
+            <div class="affirmation-container">
+                <div class="affirmation-header">
+                    <h2 class="affirmation-title">Today's Truth</h2>
+                    <div class="affirmation-subtitle">Your daily identity declaration</div>
+                </div>
+                
+                <div class="main-affirmation" id="todayMainAffirmation">
+                    I am God's beloved child
+                </div>
+
+                <div class="supporting-verse" id="todayVerse">
+                    "See what great love the Father has lavished on us, that we should be called children of God! And that is what we are!"
+                    <div class="verse-reference">1 John 3:1</div>
+                </div>
+
+                <div class="affirmation-actions">
+                    <button class="btn btn-primary" onclick="completeAffirmation('today')">I Believe This</button>
+                    <button class="btn btn-secondary" onclick="nextTodayAffirmation()">New Affirmation</button>
+                    <button class="btn btn-secondary" onclick="speakAffirmation('today')">Speak It Aloud</button>
+                </div>
+
+                <div id="todaySuccess" class="success-message">
+                    ✨ You have declared this truth over your life!
+                </div>
+            </div>
+        </div>
+
+        <!-- Worth Affirmations Screen -->
+        <div id="worthAffirmations" class="screen">
+            <div class="affirmation-container">
+                <div class="affirmation-header">
+                    <h2 class="affirmation-title">My Worth</h2>
+                    <div class="affirmation-subtitle">Your value in God's eyes</div>
+                </div>
+                
+                <div class="main-affirmation" id="worthMainAffirmation">
+                    I am precious in God's sight
+                </div>
+
+                <div class="supporting-verse" id="worthVerse">
+                    "Since you are precious and honored in my sight, and because I love you, I will give people in exchange for you, nations in exchange for your life."
+                    <div class="verse-reference">Isaiah 43:4</div>
+                </div>
+
+                <div class="affirmation-actions">
+                    <button class="btn btn-primary" onclick="completeAffirmation('worth')">I Am Precious</button>
+                    <button class="btn btn-secondary" onclick="nextWorthAffirmation()">Next Truth</button>
+                    <button class="btn btn-secondary" onclick="speakAffirmation('worth')">Declare It</button>
+                </div>
+
+                <div id="worthSuccess" class="success-message">
+                    💎 You are precious beyond measure!
+                </div>
+            </div>
+        </div>
+
+        <!-- Strength Affirmations Screen -->
+        <div id="strengthAffirmations" class="screen">
+            <div class="affirmation-container">
+                <div class="affirmation-header">
+                    <h2 class="affirmation-title">My Strength</h2>
+                    <div class="affirmation-subtitle">The power you have in Christ</div>
+                </div>
+                
+                <div class="main-affirmation" id="strengthMainAffirmation">
+                    I can do all things through Christ
+                </div>
+
+                <div class="supporting-verse" id="strengthVerse">
+                    "I can do all this through him who gives me strength."
+                    <div class="verse-reference">Philippians 4:13</div>
+                </div>
+
+                <div class="affirmation-actions">
+                    <button class="btn btn-primary" onclick="completeAffirmation('strength')">I Am Strong</button>
+                    <button class="btn btn-secondary" onclick="nextStrengthAffirmation()">Next Power</button>
+                    <button class="btn btn-secondary" onclick="speakAffirmation('strength')">Proclaim It</button>
+                </div>
+
+                <div id="strengthSuccess" class="success-message">
+                    💪 You are strong and capable in Him!
+                </div>
+            </div>
+        </div>
+
+        <!-- Love Affirmations Screen -->
+        <div id="loveAffirmations" class="screen">
+            <div class="affirmation-container">
+                <div class="affirmation-header">
+                    <h2 class="affirmation-title">My Love</h2>
+                    <div class="affirmation-subtitle">How deeply you are loved</div>
+                </div>
+                
+                <div class="main-affirmation" id="loveMainAffirmation">
+                    I am unconditionally loved by God
+                </div>
+
+                <div class="supporting-verse" id="loveVerse">
+                    "But God demonstrates his own love for us in this: While we were still sinners, Christ died for us."
+                    <div class="verse-reference">Romans 5:8</div>
+                </div>
+
+                <div class="affirmation-actions">
+                    <button class="btn btn-primary" onclick="completeAffirmation('love')">I Am Loved</button>
+                    <button class="btn btn-secondary" onclick="nextLoveAffirmation()">Next Love</button>
+                    <button class="btn btn-secondary" onclick="speakAffirmation('love')">Feel It</button>
+                </div>
+
+                <div id="loveSuccess" class="success-message">
+                    ❤️ You are completely and unconditionally loved!
+                </div>
+            </div>
+        </div>
+
+        <!-- Crisis Support Screen -->
+        <div id="crisisScreen" class="screen">
+            <div class="crisis-container">
+                <div class="crisis-alert">
+                    <h2>🛡️ Identity Crisis Support</h2>
+                    <div class="crisis-text">
+                        If you are in crisis, please contact your local helpline for immediate support.
+                        Remember: Your identity is secure in Christ.
+                    </div>
+                </div>
+
+                <div class="identity-grid">
+                    <div class="identity-card">
+                        <div class="identity-statement">I am chosen by God</div>
+                        <div class="identity-verse">"But you are a chosen people, a royal priesthood, a holy nation, God's special possession." - 1 Peter 2:9</div>
+                    </div>
+
+                    <div class="identity-card">
+                        <div class="identity-statement">I am never alone</div>
+                        <div class="identity-verse">"Never will I leave you; never will I forsake you." - Hebrews 13:5</div>
+                    </div>
+
+                    <div class="identity-card">
+                        <div class="identity-statement">I am more than a conqueror</div>
+                        <div class="identity-verse">"In all these things we are more than conquerors through him who loved us." - Romans 8:37</div>
+                    </div>
+
+                    <div class="identity-card">
+                        <div class="identity-statement">I am his masterpiece</div>
+                        <div class="identity-verse">"For we are God's handiwork, created in Christ Jesus to do good works." - Ephesians 2:10</div>
+                    </div>
+
+                    <div class="identity-card">
+                        <div class="identity-statement">I am safe in his hands</div>
+                        <div class="identity-verse">"I give them eternal life, and they shall never perish; no one will snatch them out of my hand." - John 10:28</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resources Screen -->
+        <div id="resourcesScreen" class="screen">
+            <div class="resources-container">
+                <div class="resource-section">
+                    <h2 class="section-title">
+                        🎯 Identity Categories
+                    </h2>
+                    <ul class="affirmation-list">
+                        <li class="affirmation-item" onclick="loadCategory('purpose')">
+                            <div class="affirmation-preview">I am created with purpose</div>
+                            <div class="affirmation-description">Affirmations about your divine calling and purpose</div>
+                        </li>
+                        <li class="affirmation-item" onclick="loadCategory('forgiveness')">
+                            <div class="affirmation-preview">I am forgiven and free</div>
+                            <div class="affirmation-description">Declarations of freedom from shame and guilt</div>
+                        </li>
+                        <li class="affirmation-item" onclick="loadCategory('victory')">
+                            <div class="affirmation-preview">I am victorious in Christ</div>
+                            <div class="affirmation-description">Affirmations of overcoming and triumph</div>
+                        </li>
+                        <li class="affirmation-item" onclick="loadCategory('peace')">
+                            <div class="affirmation-preview">I am at peace with God</div>
+                            <div class="affirmation-description">Truths about your peace and rest in Him</div>
+                        </li>
+                        <li class="affirmation-item" onclick="loadCategory('equipped')">
+                            <div class="affirmation-preview">I am equipped for every good work</div>
+                            <div class="affirmation-description">Affirmations about your gifts and abilities</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="resource-section">
+                    <h2 class="section-title">
+                        📈 Affirmation Progress
+                    </h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px;">
+                        <div style="text-align: center; background: linear-gradient(45deg, #f39c12, #e67e22); color: white; padding: 20px; border-radius: 15px;">
+                            <div style="font-size: 2.5em; font-weight: bold;">12</div>
+                            <div style="font-size: 0.9em; text-transform: uppercase;">Day Streak</div>
+                        </div>
+                        <div style="text-align: center; background: linear-gradient(45deg, #27ae60, #229954); color: white; padding: 20px; border-radius: 15px;">
+                            <div style="font-size: 2.5em; font-weight: bold;">58</div>
+                            <div style="font-size: 0.9em; text-transform: uppercase;">Total Spoken</div>
+                        </div>
+                        <div style="text-align: center; background: linear-gradient(45deg, #8e44ad, #732d91); color: white; padding: 20px; border-radius: 15px;">
+                            <div style="font-size: 2.5em; font-weight: bold;">15</div>
+                            <div style="font-size: 0.9em; text-transform: uppercase;">Categories</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="resource-section">
+                    <h2 class="section-title">
+                        🎵 Speaking Tips
+                    </h2>
+                    <div style="line-height: 1.8; color: #7f8c8d; font-size: 1.1em;">
+                        <p><strong>1. Speak with Conviction:</strong> Say each affirmation aloud with confidence and belief.</p>
+                        <p><strong>2. Look in the Mirror:</strong> Make eye contact with yourself while declaring these truths.</p>
+                        <p><strong>3. Repeat Daily:</strong> Consistency builds faith and transforms your thought patterns.</p>
+                        <p><strong>4. Add Personal Touch:</strong> Insert your name: "I, [Your Name], am fearfully and wonderfully made."</p>
+                        <p><strong>5. Pray First:</strong> Ask God to help you believe and receive these truths about who you are.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Modal -->
+        <div id="infoModal" class="modal">
+            <div class="modal-content">
+                <button class="modal-close" onclick="closeModal('infoModal')">×</button>
+                <h2 class="modal-title">📱 App Guide</h2>
+                
+                <div class="modal-text">
+                    <strong>What this app does:</strong><br>
+                    Identity in Christ helps you overcome shame and self-doubt through powerful Scripture-based affirmations about your true identity in God.
+                </div>
+
+                <div class="modal-text">
+                    <strong>How to use:</strong><br>
+                    • Start each day with "Today's Truth"<br>
+                    • Explore affirmations by category (Worth, Strength, Love)<br>
+                    • Speak affirmations aloud for maximum impact<br>
+                    • Access crisis support for immediate encouragement<br>
+                    • Track your progress and build consistency
+                </div>
+
+                <div class="modal-text">
+                    <strong>Install on your phone:</strong><br>
+                    📱 <strong>iPhone:</strong> Tap Share → Add to Home Screen<br>
+                    📱 <strong>Android:</strong> Tap Menu → Add to Home Screen
+                </div>
+
+                <div class="modal-text">
+                    <strong>Best Practices:</strong><br>
+                    • Use daily for 21 days to build new thought patterns<br>
+                    • Speak affirmations aloud when possible<br>
+                    • Look in a mirror while declaring these truths<br>
+                    • Start and end your day with identity affirmations
+                </div>
+
+                <div class="modal-text">
+                    This app works offline and saves your progress locally on your device.
+                </div>
+            </div>
+        </div>
+
+        <!-- About Modal -->
+        <div id="aboutModal" class="modal">
+            <div class="modal-content">
+                <button class="modal-close" onclick="closeModal('aboutModal')">×</button>
+                <h2 class="modal-title">ℹ️ About</h2>
+                
+                <div class="modal-text">
+                    <strong>Made by Justin</strong><br>
+                    Depths to Heights
+                </div>
+
+                <div class="modal-text">
+                    <strong>Website:</strong><br>
+                    <a href="https://depthstoheights.org" target="_blank" style="color: #e67e22;">https://depthstoheights.org</a>
+                </div>
+
+                <div class="modal-text">
+                    <strong>Contact:</strong><br>
+                    <a href="mailto:depthstoheights@gmail.com" style="color: #e67e22;">depthstoheights@gmail.com</a>
+                </div>
+
+                <button class="donate-btn" onclick="window.open('https://www.paypal.com/donate/?hosted_button_id=8GRE7B8C3TP2U', '_blank')">
+                    💝 Donate via PayPal
+                </button>
+
+                <div class="modal-text">
+                    <strong>Our Mission:</strong><br>
+                    We create digital tools to support spiritual growth, identity formation, and faith-based wellness. Our apps help people overcome shame, discover their worth, and embrace their God-given identity through Scripture-based affirmations and biblical truth.
+                </div>
+
+                <div class="modal-text">
+                    <strong>Scripture Foundation:</strong><br>
+                    Every affirmation in this app is rooted in biblical truth, helping you align your self-perception with God's perspective of who you are in Christ.
+                </div>
+
+                <div class="modal-text" style="font-size: 0.9em; color: #999;">
+                    Version 1.0 | © 2024 Depths to Heights
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <div class="nav-item active" onclick="showScreen('homeScreen')">
+                <div class="nav-icon">🏠</div>
+                <div class="nav-label">Home</div>
+            </div>
+            <div class="nav-item" onclick="showScreen('crisisScreen')">
+                <div class="nav-icon">🛡️</div>
+                <div class="nav-label">Crisis</div>
+            </div>
+            <div class="nav-item" onclick="showScreen('resourcesScreen')">
+                <div class="nav-icon">📚</div>
+                <div class="nav-label">Resources</div>
+            </div>
+            <div class="nav-item" onclick="showModal('infoModal')">
+                <div class="nav-icon">ℹ️</div>
+                <div class="nav-label">Info</div>
+            </div>
+            <div class="nav-item" onclick="showModal('aboutModal')">
+                <div class="nav-icon">👤</div>
+                <div class="nav-label">About</div>
+            </div>
+        </nav>
+    </div>
+
+    <script>
+        // App State
+        let appData = {
+            affirmationStreak: 12,
+            totalAffirmations: 58,
+            lastAffirmationDate: new Date().toDateString(),
+            completedToday: {
+                today: false,
+                worth: false,
+                strength: false,
+                love: false
+            },
+            currentAffirmationIndex: {
+                today: 0,
+                worth: 0,
+                strength: 0,
+                love: 0
+            }
+        };
+
+        let currentScreen = 'homeScreen';
+        let screenHistory = [];
+
+        // Affirmation Content Arrays
+        const todayAffirmations = [
+            {
+                statement: "I am God's beloved child",
+                verse: "See what great love the Father has lavished on us, that we should be called children of God! And that is what we are!",
+                reference: "1 John 3:1"
+            },
+            {
+                statement: "I am chosen and appointed",
+                verse: "You did not choose me, but I chose you and appointed you so that you might go and bear fruit—fruit that will last.",
+                reference: "John 15:16"
+            },
+            {
+                statement: "I am a new creation",
+                verse: "Therefore, if anyone is in Christ, the new creation has come: The old has gone, the new is here!",
+                reference: "2 Corinthians 5:17"
+            }
+        ];
+
+        const worthAffirmations = [
+            {
+                statement: "I am precious in God's sight",
+                verse: "Since you are precious and honored in my sight, and because I love you, I will give people in exchange for you, nations in exchange for your life.",
+                reference: "Isaiah 43:4"
+            },
+            {
+                statement: "I am worth more than many sparrows",
+                verse: "Are not two sparrows sold for a penny? Yet not one of them will fall to the ground outside your Father's care. So don't be afraid; you are worth more than many sparrows.",
+                reference: "Matthew 10:29,31"
+            },
+            {
+                statement: "I am God's treasured possession",
+                verse: "For you are a people holy to the Lord your God. Out of all the peoples on the face of the earth, the Lord has chosen you to be his treasured possession.",
+                reference: "Deuteronomy 14:2"
+            }
+        ];
+
+        const strengthAffirmations = [
+            {
+                statement: "I can do all things through Christ",
+                verse: "I can do all this through him who gives me strength.",
+                reference: "Philippians 4:13"
+            },
+            {
+                statement: "I am strong and courageous",
+                verse: "Have I not commanded you? Be strong and courageous. Do not be afraid; do not be discouraged, for the Lord your God will be with you wherever you go.",
+                reference: "Joshua 1:9"
+            },
+            {
+                statement: "I am equipped for every good work",
+                verse: "All Scripture is God-breathed and is useful for teaching, rebuking, correcting and training in righteousness, so that the servant of God may be thoroughly equipped for every good work.",
+                reference: "2 Timothy 3:16-17"
+            }
+        ];
+
+        const loveAffirmations = [
+            {
+                statement: "I am unconditionally loved by God",
+                verse: "But God demonstrates his own love for us in this: While we were still sinners, Christ died for us.",
+                reference: "Romans 5:8"
+            },
+            {
+                statement: "Nothing can separate me from God's love",
+                verse: "For I am convinced that neither death nor life, neither angels nor demons, neither the present nor the future, nor any powers, neither height nor depth, nor anything else in all creation, will be able to separate us from the love of God that is in Christ Jesus our Lord.",
+                reference: "Romans 8:38-39"
+            },
+            {
+                statement: "I am loved with an everlasting love",
+                verse: "The Lord appeared to us in the past, saying: 'I have loved you with an everlasting love; I have drawn you with unfailing kindness.'",
+                reference: "Jeremiah 31:3"
+            }
+        ];
+
+        const dailyIdentityStatements = [
+            {
+                statement: "I am fearfully and wonderfully made",
+                verse: "I praise you because I am fearfully and wonderfully made; your works are wonderful, I know that full well.",
+                reference: "Psalm 139:14"
+            },
+            {
+                statement: "I am the salt of the earth",
+                verse: "You are the salt of the earth. But if the salt loses its saltiness, how can it be made salty again?",
+                reference: "Matthew 5:13"
+            },
+            {
+                statement: "I am the light of the world",
+                verse: "You are the light of the world. A town built on a hill cannot be hidden.",
+                reference: "Matthew 5:14"
+            }
+        ];
+
+        // Initialize app
+        function initializeApp() {
+            loadAppData();
+            updateStats();
+            setDailyIdentity();
+        }
+
+        // Enter app from welcome screen
+        function enterApp() {
+            document.getElementById('welcomeScreen').style.display = 'none';
+            showScreen('homeScreen');
+        }
+
+        // Screen navigation with history
+        function showScreen(screenId) {
+            if (currentScreen !== screenId) {
+                screenHistory.push(currentScreen);
+                if (screenHistory.length > 10) {
+                    screenHistory.shift();
+                }
+            }
+
+            // Hide all screens
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => screen.classList.remove('active'));
+            
+            // Show target screen
+            document.getElementById(screenId).classList.add('active');
+            currentScreen = screenId;
+            
+            // Update navigation
+            updateNavigation(screenId);
+            updateBackButton(screenId);
+        }
+
+        function goBack() {
+            if (screenHistory.length > 0) {
+                const previousScreen = screenHistory.pop();
+                showScreen(previousScreen);
+            } else {
+                showScreen('homeScreen');
+            }
+        }
+
+        function updateBackButton(screenId) {
+            const backButton = document.getElementById('backButton');
+            if (screenId === 'homeScreen' || screenId === 'welcomeScreen') {
+                backButton.classList.remove('show');
+            } else {
+                backButton.classList.add('show');
+            }
+        }
+
+        function updateNavigation(activeScreen) {
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+            
+            // Map screen to nav item
+            const navMap = {
+                'homeScreen': 0,
+                'crisisScreen': 1,
+                'resourcesScreen': 2
+            };
+            
+            if (navMap[activeScreen] !== undefined) {
+                navItems[navMap[activeScreen]].classList.add('active');
+            }
+        }
+
+        // Modal functions
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Audio controls
+        let audioPlaying = false;
+        function toggleAudio() {
+            const audio = document.getElementById('backgroundAudio');
+            const button = document.getElementById('audioToggle');
+            
+            if (audioPlaying) {
+                audio.pause();
+                button.textContent = '🔇';
+                audioPlaying = false;
+            } else {
+                audio.play();
+                button.textContent = '♪';
+                audioPlaying = true;
+            }
+        }
+
+        // Affirmation completion
+        function completeAffirmation(type) {
+            appData.completedToday[type] = true;
+            appData.totalAffirmations++;
+            
+            // Update streak if it's a new day
+            const today = new Date().toDateString();
+            if (appData.lastAffirmationDate !== today) {
+                appData.affirmationStreak++;
+                appData.lastAffirmationDate = today;
+            }
+            
+            saveAppData();
+            updateStats();
+            showSuccessMessage(type);
+        }
+
+        function showSuccessMessage(type) {
+            const messageId = type + 'Success';
+            const message = document.getElementById(messageId);
+            if (message) {
+                message.classList.add('show');
+                setTimeout(() => {
+                    message.classList.remove('show');
+                }, 3000);
+            }
+        }
+
+        // Speech functionality
+        function speakAffirmation(type) {
+            const affirmationMaps = {
+                'today': { element: 'todayMainAffirmation', array: todayAffirmations },
+                'worth': { element: 'worthMainAffirmation', array: worthAffirmations },
+                'strength': { element: 'strengthMainAffirmation', array: strengthAffirmations },
+                'love': { element: 'loveMainAffirmation', array: loveAffirmations }
+            };
+
+            const map = affirmationMaps[type];
+            if (map && 'speechSynthesis' in window) {
+                const text = document.getElementById(map.element).textContent;
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.8;
+                utterance.pitch = 1;
+                speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Affirmation cycling functions
+        function nextTodayAffirmation() {
+            appData.currentAffirmationIndex.today = (appData.currentAffirmationIndex.today + 1) % todayAffirmations.length;
+            updateAffirmationDisplay('today', todayAffirmations, 'todayMainAffirmation', 'todayVerse');
+            saveAppData();
+        }
+
+        function nextWorthAffirmation() {
+            appData.currentAffirmationIndex.worth = (appData.currentAffirmationIndex.worth + 1) % worthAffirmations.length;
+            updateAffirmationDisplay('worth', worthAffirmations, 'worthMainAffirmation', 'worthVerse');
+            saveAppData();
+        }
+
+        function nextStrengthAffirmation() {
+            appData.currentAffirmationIndex.strength = (appData.currentAffirmationIndex.strength + 1) % strengthAffirmations.length;
+            updateAffirmationDisplay('strength', strengthAffirmations, 'strengthMainAffirmation', 'strengthVerse');
+            saveAppData();
+        }
+
+        function nextLoveAffirmation() {
+            appData.currentAffirmationIndex.love = (appData.currentAffirmationIndex.love + 1) % loveAffirmations.length;
+            updateAffirmationDisplay('love', loveAffirmations, 'loveMainAffirmation', 'loveVerse');
+            saveAppData();
+        }
+
+        function updateAffirmationDisplay(type, array, statementElement, verseElement) {
+            const index = appData.currentAffirmationIndex[type];
+            const affirmation = array[index];
+            
+            document.getElementById(statementElement).textContent = affirmation.statement;
+            document.getElementById(verseElement).innerHTML = 
+                `"${affirmation.verse}"<div class="verse-reference">${affirmation.reference}</div>`;
+        }
+
+        // Resource functions
+        function loadCategory(category) {
+            const categories = {
+                purpose: {
+                    title: "Created with Purpose",
+                    affirmations: [
+                        { statement: "I am created for good works", verse: "For we are God's handiwork, created in Christ Jesus to do good works, which God prepared in advance for us to do." },
+                        { statement: "I have a hope and a future", verse: "For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, to give you hope and a future." }
+                    ]
+                },
+                forgiveness: {
+                    title: "Forgiven and Free",
+                    affirmations: [
+                        { statement: "I am forgiven completely", verse: "If we confess our sins, he is faithful and just and will forgive us our sins and purify us from all unrighteousness." },
+                        { statement: "I am free from condemnation", verse: "Therefore, there is now no condemnation for those who are in Christ Jesus." }
+                    ]
+                },
+                victory: {
+                    title: "Victorious in Christ",
+                    affirmations: [
+                        { statement: "I am more than a conqueror", verse: "No, in all these things we are more than conquerors through him who loved us." },
+                        { statement: "I have overcome the world", verse: "I have told you these things, so that in me you may have peace. In this world you will have trouble. But take heart! I have overcome the world." }
+                    ]
+                },
+                peace: {
+                    title: "At Peace with God",
+                    affirmations: [
+                        { statement: "I have peace with God", verse: "Therefore, since we have been justified through faith, we have peace with God through our Lord Jesus Christ." },
+                        { statement: "I have the peace of Christ", verse: "Peace I leave with you; my peace I give you. I do not give to you as the world gives. Do not let your hearts be troubled and do not be afraid." }
+                    ]
+                },
+                equipped: {
+                    title: "Equipped for Good Works",
+                    affirmations: [
+                        { statement: "I am equipped by God", verse: "May the God of peace, who through the blood of the eternal covenant brought back from the dead our Lord Jesus, that great Shepherd of the sheep, equip you with everything good for doing his will." },
+                        { statement: "I have spiritual gifts", verse: "Each of you should use whatever gift you have received to serve others, as faithful stewards of God's grace in its various forms." }
+                    ]
+                }
+            };
+            
+            showCategoryModal(category, categories[category]);
+        }
+
+        function showCategoryModal(categoryKey, category) {
+            let content = `<h3>${category.title}</h3>`;
+            category.affirmations.forEach(affirmation => {
+                content += `<div style="margin: 25px 0; padding: 20px; background: linear-gradient(45deg, #fff9e6, #fef5e7); border-radius: 15px; border: 2px solid #f39c12;">
+                    <div style="font-weight: bold; font-size: 1.4em; color: #2c3e50; margin-bottom: 15px; text-transform: uppercase;">${affirmation.statement}</div>
+                    <div style="font-style: italic; color: #e67e22; line-height: 1.6;">"${affirmation.verse}"</div>
+                </div>`;
+            });
+            
+            // Create temporary modal
+            const modal = document.createElement('div');
+            modal.className = 'modal active';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <button class="modal-close" onclick="this.closest('.modal').remove()">×</button>
+                    ${content}
+                    <button class="btn btn-primary" onclick="this.closest('.modal').remove()">Declare These Truths</button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        // Data persistence
+        function saveAppData() {
+            localStorage.setItem('identityAppData', JSON.stringify(appData));
+        }
+
+        function loadAppData() {
+            const saved = localStorage.getItem('identityAppData');
+            if (saved) {
+                appData = { ...appData, ...JSON.parse(saved) };
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('affirmationStreak').textContent = appData.affirmationStreak;
+            document.getElementById('totalAffirmations').textContent = appData.totalAffirmations;
+        }
+
+        function setDailyIdentity() {
+            const today = new Date().getDate();
+            const identityIndex = today % dailyIdentityStatements.length;
+            const dailyIdentity = dailyIdentityStatements[identityIndex];
+            
+            document.getElementById('dailyAffirmation').textContent = dailyIdentity.statement;
+            document.getElementById('affirmationVerse').textContent = `"${dailyIdentity.verse}" - ${dailyIdentity.reference}`;
+        }
+
+        // Initialize app when page loads
+        document.addEventListener('DOMContentLoaded', initializeApp);
+
+        // Close modals when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('active');
+            }
+        });
+
+        // Prevent default back button behavior
+        window.addEventListener('popstate', function(e) {
+            e.preventDefault();
+            goBack();
+        });
+    </script>
+</body>
+</html>
